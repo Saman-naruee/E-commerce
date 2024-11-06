@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # third party
     'rest_framework',
+    'mptt',
 
     # apps
     'store',
