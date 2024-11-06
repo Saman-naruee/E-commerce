@@ -10,3 +10,16 @@ class Product(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     description = models.TextField()
     image = models.FileField(upload_to='media/images/')
+
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        ordering = ['title']
+    
+class Promotion(models.Model):
+    description = models.CharField(max_length=255, default='')
+    discount = models.FloatField(default=0)
+
+    def __str__(self) -> str:
+        return str(self.discount)
