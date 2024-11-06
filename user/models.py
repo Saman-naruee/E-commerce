@@ -39,6 +39,7 @@ class UserProfile(models.Model):
     membership = models.CharField(
         max_length=1, choices=Membership, default=Membership.BRONZE)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.CharField(max_length=255)
 
     @admin.display(ordering='user__first_name')
     def first_name(self):
