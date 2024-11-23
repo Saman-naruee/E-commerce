@@ -3,7 +3,7 @@ from category.models import Category
 from rest_framework import serializers
 
 class ProductSerializer(serializers.ModelSerializer):
-    collection = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
     category = serializers.StringRelatedField()
 
