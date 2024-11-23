@@ -3,17 +3,26 @@ from  .models import Product, Review, Promotion
 from .serializers import ProductSerializer
 from rest_framework.views import APIView, status
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAdminUser, AllowAny 
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminOrReadOnly
+from .filters import ProductFilter
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 class ProductView(APIView):
     queryset = Product.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    permission_classes = [IsAdminOrReadOnly]
+    filterset_class = ProductFilter
+    search_fields = ['title', 'description']
+    ordering_fields = ['price', 'last_updated']
 
     def get_permissions(self):
-        if self.request.method in ['DELETE']:
-            return [IsAdminUser()]
-        return [AllowAny()]
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        return [IsAdminOrReadOnly()]
 
     def get(self, request):
         products = Product.objects.all()
