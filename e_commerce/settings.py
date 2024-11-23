@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME')),
-'REFRESH_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME')),
-'AUTH_HEADER_TYPES': ('JWT',)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(config('ACCESS_TOKEN_LIFETIME'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=int(config('ACCESS_TOKEN_LIFETIME'))),
+    'AUTH_HEADER_TYPES': ('JWT',)
 }
