@@ -23,11 +23,20 @@ class ProductView(APIView):
         if self.request.method == 'GET':
             return [IsAuthenticated()]
         return [IsAdminOrReadOnly()]
-
-    def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def get(self, request, product_id=None):
+        if product_id:
+            try:
+                product = Product.objects.get(pk=product_id)
+                serializer = ProductSerializer(product)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Product.DoesNotExist:
+                return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            products = Product.objects.all()
+            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
 
     def post(self, request):
         serializer = ProductSerializer(data=request.data)

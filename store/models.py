@@ -6,10 +6,10 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200)  
     price = models.PositiveBigIntegerField()  
     inventory = models.PositiveBigIntegerField()  
-    category = models.ForeignKey('category.Category', on_delete=models.PROTECT, related_name='products')  
+    category = models.ForeignKey('category.Category', blank=True, null=True, on_delete=models.PROTECT, related_name='products')  
     last_updated = models.DateTimeField(auto_now=True)  
     description = models.TextField()  
-    image = models.FileField(upload_to='media/images/')  
+    image = models.FileField(upload_to='media/images/', null=True, blank=True)  
 
     def __str__(self) -> str:  
         return self.title  
