@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'mptt',
     'django_filters',
+    'django_extensions',
 
     # apps
     'store',
