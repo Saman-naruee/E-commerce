@@ -1,15 +1,20 @@
 from django.shortcuts import render
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .serializers import UserProfileSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from .serializers import UserProfileSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
-from .models import User, UserProfile
+from .models import UserProfile, User
 
 class UserProfileView(APIView):
+    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
 
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
+    
     def get(self, request):
         user = request.user
         user_profile = get_object_or_404(UserProfile, user=user)
@@ -35,3 +40,14 @@ class UserProfileView(APIView):
         user_profile = get_object_or_404(UserProfile, user=user)
         user_profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserListView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = self.serializer_class(users, many=True)
+        return Response(serializer.data)
