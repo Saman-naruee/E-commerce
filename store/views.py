@@ -9,7 +9,7 @@ from .filters import ProductFilter
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-
+from store.logging import log_request
 
 class ProductView(APIView):
     queryset = Product.objects.all()
