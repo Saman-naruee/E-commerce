@@ -3,7 +3,7 @@ from category.models import Category
 
 class Product(models.Model):  
     title = models.CharField(max_length=200)  
-    slug = models.SlugField(max_length=200)  
+    slug = models.SlugField(max_length=200, default=str(title).lower())  
     price = models.PositiveBigIntegerField()  
     inventory = models.PositiveBigIntegerField()  
     category = models.ForeignKey('category.Category', blank=True, null=True, on_delete=models.PROTECT, related_name='products')  
